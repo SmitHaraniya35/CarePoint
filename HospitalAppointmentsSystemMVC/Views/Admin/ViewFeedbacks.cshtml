@@ -1,0 +1,57 @@
+﻿@model List<HospitalAppointmentsSystemMVC.ViewModels.FeedbackViewModel>
+
+<style>
+    .no-feedback-message {
+        background-color: #e9f7fd;
+        border-left: 5px solid #007bff;
+        font-size: 1.25rem;
+        color: #5b6d7e;
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-feedback-message i {
+        margin-right: 10px;
+    }
+
+
+</style>
+
+
+<h2>Patient Feedback</h2>
+<hr/>
+@if (!Model.Any())
+{
+    <div class="no-feedback-message text-center p-4 rounded" style="background-color: #e9f7fd; color: #5b6d7e; border: 1px solid #aed6f1;">
+        <i class="bi bi-info-circle-fill" style="font-size: 1.5rem; color: #007bff;"></i>
+        <span>No feedbacks found.</span>
+    </div>
+
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Comment</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var feedback in Model)
+            {
+                <tr>
+                    <td>@feedback.PatientName</td>
+                    <td>@feedback.DoctorName</td>
+                    <td>@feedback.Comment</td>
+                    <td>@feedback.Rating</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

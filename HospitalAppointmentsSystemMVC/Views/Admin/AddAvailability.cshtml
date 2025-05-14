@@ -1,0 +1,96 @@
+﻿@model HospitalAppointmentsSystemMVC.ViewModels.AvailabilityViewModel
+
+@{
+    ViewData["Title"] = "Add Availability";
+}
+
+<style>
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.25);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.5);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-90 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+            <hr class="mb-4" />
+            <form asp-action="AddAvailability" method="post">
+                <div class="form-group mb-3">
+                    <label asp-for="Day" class="form-label">Select Day</label>
+                    <select asp-for="Day" class="form-control" asp-items="ViewBag.RemainingDays">
+                        <option value="">-- Select Day --</option>
+                    </select>
+                    <span asp-validation-for="Day" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="StartTime" class="form-label">Start Time</label>
+                    <input asp-for="StartTime" class="form-control" type="time" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="EndTime" class="form-label">End Time</label>
+                    <input asp-for="EndTime" class="form-control" type="time" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="DoctorId" />
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a asp-action="ViewDoctorAvailability" asp-route-id="@Model.DoctorId" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

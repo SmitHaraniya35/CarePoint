@@ -1,0 +1,78 @@
+﻿@model List<UnavailabilityViewModel>
+
+@{
+    ViewBag.Title = "Doctor Unavailability List";
+}
+
+<style>
+    .table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .add-report-btn {
+        background-color: white;
+        color: #0056b3;
+        font-size: 1rem;
+        padding: 8px 15px;
+        border-radius: 25px;
+        box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .add-report-btn:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .add-report-btn i {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h2 class="text-center mb-3">Unavailability List</h2>
+    <hr />
+
+    <div class="card shadow">
+        <div class="card-header">
+            <span>Unavailability Records</span>
+            <a class="btn btn-primary btn-sm add-report-btn" asp-action="ReportUnavailability">
+                <i class="bi bi-plus-circle-fill"></i> Report Unavailability
+            </a>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered align-middle table-hover">
+                <thead>
+                    <tr>
+                        <th>Added By</th>
+                        <th>Added By Name</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AddedBy</td>
+                            <td>@item.Name</td>
+                            <td>@item.UnavailableDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.Reason</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

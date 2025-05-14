@@ -1,0 +1,100 @@
+﻿@model DoctorViewModel
+
+@{
+    ViewData["Title"] = "Manage Doctor";
+}
+
+<style>
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.25);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.5);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-90 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+            <hr class="mb-4" />
+            <form asp-action="ManageDoctorProfile" method="post">
+                <input type="hidden" asp-for="DoctorId" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="FullName" class="form-label text-uppercase fw-bold"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Specialization" class="form-label text-uppercase fw-bold"></label>
+                    <input asp-for="Specialization" class="form-control" readonly />
+                    <span asp-validation-for="Specialization" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ContactNumber"></label>
+                    <input asp-for="ContactNumber" class="form-control" />
+                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Email" class="form-label text-uppercase fw-bold"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <a asp-action="Home" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,205 @@
+﻿@model IEnumerable<HospitalAppointmentsSystemMVC.ViewModels.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "View Appointments";
+}
+
+<style>
+    .card-header {
+    background-color: #007bff;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    }
+
+    .filter-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    }
+
+    .form-control {
+    min-width: 200px;
+    }
+
+    .table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+    }
+
+    .table thead {
+    background-color: #343a40;
+    color: white;
+    }
+
+    .btn-sm {
+    margin-bottom: 0.3rem;
+    }
+
+    .alert {
+    text-align: center;
+    }
+
+    .btn-group-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    }
+
+    .action-buttons .btn {
+    margin-right: 5px;
+    }
+</style>
+
+<div class="container-fluid">
+    <h2 class="text-center mb-3">Appointments</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No appointments found.</div>
+    }
+    else
+    {
+
+        <!-- Appointments Table -->
+        <div class="card shadow-lg">
+            <div class="card-header">Appointments Records</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="mb-3">
+                        <input type="text" id="appointmentSearch" class="form-control" placeholder="Search Appointment by any field...">
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <th>Doctor Name</th>
+                                <th>Date</th>
+                                <th>Time Slot</th>
+                                <th>Status</th>
+                                <th>Canceled By</th>
+                                <th>Cancellation Reason</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorScheduleBody">
+                            @foreach (var appointment in Model)
+                            {
+                                <tr>
+                                    <td>@appointment.AppointmentId</td>
+                                    <td>@appointment.DoctorName</td>
+                                    <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@appointment.TimeSlot</td>
+                                    <td>
+                                        <span class="badge bg-@(
+                                            appointment.Status.ToLower() == "completed" ? "success" :
+                                            appointment.Status.ToLower() == "pending" ? "warning text-dark" :
+                                            appointment.Status.ToLower() == "missed" ? "primary" :
+                                            appointment.Status.ToLower() == "cancelled" ? "danger" :
+                                            "light text-dark"
+                                        )">
+                                            @appointment.Status
+                                        </span>
+                                    </td>
+                                    <td>@(appointment.CanceledBy ?? "—")</td>
+                                    <td>@(appointment.CancellationReason ?? "—")</td>
+                                    <td>
+                                        <div class="action-buttons btn-group-column">
+                                            @if (appointment.Status.ToLower() == "completed")
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary" asp-action="ViewPrescription" asp-route-id="@appointment.AppointmentId">
+                                                    <i class="bi bi-file-medical"></i> View Prescription
+                                                </a>
+                                            }
+
+                                            @if (appointment.Status.ToLower() == "pending")
+                                            {
+                                                <a class="btn btn-sm btn-outline-danger" asp-action="CancelAppointment" asp-route-id="@appointment.AppointmentId" onclick="return confirm('Are you sure you want to delete this appointment?')">
+                                                    <i class="bi bi-trash-fill"></i> Cancel
+                                                </a>
+                                            }
+
+                                            @if (appointment.Status.ToLower() == "missed" || appointment.Status.ToLower() == "cancelled")
+                                            {
+                                                <span>N/A</span>
+                                            }
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    
+</div>
+
+@section Scripts {
+    <script>
+        // search filter
+        document.getElementById("appointmentSearch").addEventListener("keyup", function () {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll("table tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(" ");
+
+                if (rowText.includes(searchValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+
+        function formatDate(dateInput) {
+            const date = new Date(dateInput);
+            return date.toISOString().split("T")[0];
+        }
+
+        // Function to update the appointment list with AJAX
+        function updateAppointments(status, date) {
+            $.get('/Patient/ViewAppointments', { statusFilter: status, dateFilter: date }, function (data) {
+                var appointmentsTable = $('#doctorScheduleBody');
+                appointmentsTable.empty();
+
+                if (data.length === 0) {
+                    appointmentsTable.append('<tr><td colspan="8">No appointments found</td></tr>');
+                } else {
+                    data.forEach(function (appointment) {
+                        appointmentsTable.append('<tr>'
+                            + '<td>' + appointment.appointmentId + '</td>'
+                            + '<td>' + appointment.doctorName + '</td>'
+                            + '<td>' + formatDate(appointment.appointmentDate) + '</td>'
+                            + '<td>' + appointment.timeSlot + '</td>'
+                            + '<td><span class="badge bg-' + (
+                                appointment.status.toLowerCase() === 'completed' ? 'success' :
+                                appointment.status.toLowerCase() === 'pending' ? 'warning text-dark' :
+                                appointment.status.toLowerCase() === 'missed' ? 'primary' :
+                                appointment.status.toLowerCase() === 'cancelled' ? 'danger' : 'secondary'
+                            ) + '">' + appointment.status + '</span></td>'
+                            + '<td>' + (appointment.canceledBy || '—') + '</td>'
+                            + '<td>' + (appointment.cancellationReason || '—') + '</td>'
+                            + '<td class="btn-group-column">'
+                                + (appointment.status.toLowerCase() === 'completed' ?
+                                    '<a class="btn btn-sm btn-primary" href="/Patient/ViewPrescription/' + appointment.appointmentId + '">View Prescription</a>' : '')
+                                + (appointment.status.toLowerCase() === 'pending' ?
+                                    '<a class="btn btn-sm btn-danger" href="/Patient/CancelAppointment/' + appointment.appointmentId + '">Cancel</a>' : '')
+                            + '</td>'
+                            + '</tr>');
+                    });
+                }
+            });
+        }
+
+    </script>
+}

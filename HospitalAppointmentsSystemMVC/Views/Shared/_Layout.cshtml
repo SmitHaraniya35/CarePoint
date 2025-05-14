@@ -1,0 +1,183 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var role = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+    var isLoggedIn = !string.IsNullOrEmpty(role);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - CarePoint Hospital</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap & Font Awesome -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0; 
+        }
+
+        main{
+            padding: 20px;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: normal;
+            color: #1a73e8;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+
+        .nav-link {
+            color: white !important;
+            margin-left: 15px;
+            transition: color 0.3s ease;
+        }
+
+            .nav-link:hover {
+                color: #ffdd57 !important;
+            }
+
+        footer {
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            color: white;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #ffdd57;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background: linear-gradient(135deg, #0072ff, #00c6ff);
+                transform: translateY(-2px);
+            }
+
+        .card-title {
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+
+
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Header/Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container-fluid" style="margin-left: 1.2rem; margin-right: 1.2rem;">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarePoint</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav">
+
+                        @if (role == "Admin")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageDoctors">Doctors</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManagePatients">Patients</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewAppointments" asp-route-id="" asp-route-role="admin">Appointments</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewFeedbacks">Feedbacks</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewUnavailability">Unavailability</a></li>
+                        }
+                        else if (role == "Patient")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="Home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="BookAppointment">Book</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="ViewAppointments">Appointments</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="ManagePatientProfile">Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="ManageAccount">Account</a></li>
+                        }
+                        else if (role == "Doctor")
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="Home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="ViewAppointments">Appointments</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="DoctorSchedules">Schedules</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="ManageDoctorProfile">Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="ManageAccount">Account</a></li>
+                        }
+
+                        @if (!isLoggedIn)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Signup">Signup</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Login">Login</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 container py-4">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-autotext-white">
+        <div style="margin-left: 2rem; margin-right: 2rem;">
+            &copy; 2025 - CarePoint Hospital |
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

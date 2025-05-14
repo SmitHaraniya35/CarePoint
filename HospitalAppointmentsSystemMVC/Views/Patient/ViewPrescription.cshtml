@@ -1,0 +1,80 @@
+﻿@model PrescriptionViewModel
+
+@{
+    ViewData["Title"] = "View Prescription";
+}
+
+<style>
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.25);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.5);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-90 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+            <hr class="mb-4" />
+
+            @if (Model == null)
+            {
+                <div class="alert alert-info text-center">No Prescription found.</div>
+            }
+            else
+            {
+                <input type="hidden" name="PrescriptionId" value="@Model.PrescriptionId" />
+                <input type="hidden" name="AppointmentId" value="@Model.AppointmentId" />
+
+                <div class="form-group mb-3">
+                    <label for="Diagnosis">Diagnosis</label>
+                    <input type="text" class="form-control" id="Diagnosis" name="Diagnosis" value="@Model.Diagnosis" readonly />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="Medicines">Medicines</label>
+                    <input type="text" class="form-control" id="Medicines" name="Medicines" value="@Model.Medicines" readonly />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="Notes">Notes</label>
+                    <textarea class="form-control" id="Notes" name="Notes" rows="4" readonly>@Model.Notes</textarea>
+                </div>
+
+                <div class="d-flex">
+                    <a class="btn btn-success px-4" asp-action="ViewAppointments">Back</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

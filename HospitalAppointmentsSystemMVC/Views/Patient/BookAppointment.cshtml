@@ -1,0 +1,260 @@
+﻿@model HospitalAppointmentsSystemMVC.ViewModels.BookAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<style>
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.25);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.5);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .min-vh-90 {
+        min-height: 90vh;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .card {
+        border-radius: 8px;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .form-label {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .text-uppercase {
+        text-transform: uppercase;
+    }
+
+    .fw-bold {
+        font-weight: bold;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-90 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 800px;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+            <hr class="mb-4" />
+
+            <form asp-action="BookAppointment" method="post">
+                <div class="form-group mb-3">
+                    <label for="Specialization" class="form-label text-uppercase fw-bold">Specialization</label>
+                    <select id="Specialization" class="form-control" asp-for="Specialization" asp-items="@(new SelectList(ViewBag.Specializations))">
+                        <option value="">-- Select Specialization --</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="DoctorId" class="form-label text-uppercase fw-bold">Doctor</label>
+                    <select id="DoctorId" class="form-control" asp-for="DoctorId" disabled>
+                        <option value="">-- Select Doctor --</option>
+                    </select>
+                </div>
+
+                <div id="doctorScheduleContainer" class="mt-4 mb-4" style="display: none;">
+                    <h5 class="mt-4 mb-3 text-primary font-weight-bold">Doctor's Weekly Schedule</h5>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-0">
+                            <table class="table table-bordered table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">Day</th>
+                                        <th class="text-center">Start Time</th>
+                                        <th class="text-center">End Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="doctorScheduleBody" class="text-center">
+                                    <!-- Rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AppointmentDate" class="form-label text-uppercase fw-bold"></label>
+                    <input asp-for="AppointmentDate" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" disabled/>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="TimeSlot" class="form-label text-uppercase fw-bold"></label>
+                    <select asp-for="TimeSlot" id="TimeSlot" class="form-control" disabled>
+                        <option value="">-- Select Time Slot --</option>
+                    </select>
+                </div>
+
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success px-4">Book Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#AppointmentDate').prop('disabled', true).val('');
+
+        $('#Specialization').change(function () {
+            const specialization = $(this).val();
+
+            // Reset and disable all next fields
+            $('#DoctorId').prop('disabled', true).val('');
+            $('#AppointmentDate').prop('disabled', true).val('');
+            $('#TimeSlot').prop('disabled', true).val('');
+            $('#doctorScheduleBody').empty();
+            $('#doctorScheduleContainer').hide();
+
+            if (!specialization) return;
+
+            $.get('/Patient/GetDoctorsBySpecialization', { specialization }, function (data) {
+                const doctorDropdown = $('#DoctorId');
+                doctorDropdown.empty().append('<option value="">-- Select Doctor --</option>');
+                data.forEach(doctor => {
+                    doctorDropdown.append(`<option value="${doctor.doctorId}">${doctor.fullName}</option>`);
+                });
+                // Enable next field
+                doctorDropdown.prop('disabled', false);
+            });
+        });
+
+        $('#DoctorId').change(function () {
+            const doctorId = $(this).val();
+
+            $('#AppointmentDate').prop('disabled', true).val('');
+            $('#TimeSlot').prop('disabled', true).val('');
+            $('#doctorScheduleBody').empty();
+            $('#doctorScheduleContainer').hide();
+
+            if (!doctorId) return;
+
+            $.get('/Patient/GetAvailableDates', { doctorId }, function (data) {
+                availableDates = data.availableDates;
+                doctorUnavailable = data.doctorUnavailable;
+                hospitalClosed = data.hospitalClosed;
+                alreadyBookedWithThisDoctor = data.alreadyBookedWithThisDoctor;
+                patientAppointmentsWithOthers = data.patientAppointmentsWithOthers;
+
+                $('#AppointmentDate').prop('disabled', false);
+            });
+
+            $.get('/Patient/GetDoctorSchedules', { doctorId }, function (data) {
+                if (data.length > 0) {
+                    data.forEach(schedule => {
+                        $('#doctorScheduleBody').append(`
+                            <tr>
+                                <td>${getDayName(schedule.day)}</td>
+                                <td>${formatTime(schedule.startTime)}</td>
+                                <td>${formatTime(schedule.endTime)}</td>
+                            </tr>
+                        `);
+                    });
+                    $('#doctorScheduleContainer').show();
+                }
+            });
+        });
+
+        $('#AppointmentDate').change(function () {
+            const selectedDate = $(this).val();
+            $('#TimeSlot').prop('disabled', true).val('');
+
+            if (!selectedDate) return;
+
+            if (doctorUnavailable.includes(selectedDate)) {
+                alert("The doctor is unavailable on this date.");
+                $(this).val('');
+                return;
+            }
+
+            if (hospitalClosed.includes(selectedDate)) {
+                alert("The hospital is closed on this date.");
+                $(this).val('');
+                return;
+            }
+
+            if (alreadyBookedWithThisDoctor.includes(selectedDate)) {
+                alert("You already have an appointment with this doctor on this date.");
+                $(this).val('');
+                return;
+            }
+
+            if (!availableDates.includes(selectedDate)) {
+                alert("This date is not available for booking.");
+                $(this).val('');
+                return;
+            }
+
+            const doctorId = $('#DoctorId').val();
+            if (doctorId && selectedDate) {
+                $.get('/Patient/GetAvailableTimeSlots', { doctorId, appointmentDate: selectedDate }, function (data) {
+                    const timeSlotDropdown = $('#TimeSlot');
+                    timeSlotDropdown.empty();
+                    timeSlotDropdown.append('<option value="">-- Select Time Slot --</option>');
+                    data.forEach(function (slot) {
+                        timeSlotDropdown.append('<option value="' + slot + '">' + slot + '</option>');
+                    });
+                    // Enable next field
+                    timeSlotDropdown.prop('disabled', false);
+                });
+            }
+        });
+
+        $('#TimeSlot').change(function () {
+            const selectedDate = $('#AppointmentDate').val();
+            const selectedSlot = $(this).val();
+
+            if (!selectedDate || !selectedSlot) return;
+
+            const clash = patientAppointmentsWithOthers.some(app =>
+                app.date === selectedDate && app.timeSlot.slice(0, 5) === selectedSlot
+            );
+
+            if (clash) {
+                alert("You already have an appointment with another doctor at this time.");
+                $(this).val('');
+            }
+        });
+
+    </script>
+}

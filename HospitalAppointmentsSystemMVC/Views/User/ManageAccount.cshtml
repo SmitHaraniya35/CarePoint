@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Manage Account";
+}
+
+<style>
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.25);
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.125rem rgba(0, 123, 255, 0.5);
+        }
+
+    .form-label {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .text-uppercase {
+        text-transform: uppercase;
+    }
+
+    .fw-bold {
+        font-weight: bold;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-90 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+            <hr class="mb-4" />
+            <form asp-action="ManageAccount" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label text-uppercase fw-bold">Username</label>
+                    <input type="text" class="form-control" name="username" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="currentPassword" class="form-label text-uppercase fw-bold">Current Password</label>
+                    <input type="password" class="form-control" name="currentPassword" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="newPassword" class="form-label text-uppercase fw-bold">New Password</label>
+                    <input type="password" class="form-control" name="newPassword"  />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="confirmPassword" class="form-label text-uppercase fw-bold">Confirm New Password</label>
+                    <input type="password" class="form-control" name="confirmPassword"  />
+                </div>
+
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-success px-4">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

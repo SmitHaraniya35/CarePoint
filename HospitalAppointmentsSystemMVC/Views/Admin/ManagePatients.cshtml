@@ -1,0 +1,116 @@
+﻿@model IEnumerable<PatientViewModel>
+@{
+    ViewData["Title"] = "Manage Patients";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .action-buttons .btn {
+        margin-right: 5px;
+    }
+
+    .action-buttons .btn:hover {
+        color: black;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h2 class="text-center mb-3">Manage Patients</h2>
+    <hr />
+
+    <div class="card shadow">
+        <div class="card-header">
+            Patient List
+        </div>
+        <div class="card-body table-responsive">
+            <div class="mb-3">
+                <input type="text" id="patientSearch" class="form-control" placeholder="Search patient by any field...">
+            </div>
+            <table class="table table-bordered align-middle table-hover">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@patient.PatientId</td>
+                            <td>@patient.FullName</td>
+                            <td>@patient.Email</td>
+                            <td>@patient.ContactNumber</td>
+                            <td>@patient.Gender</td>
+                            <td>
+                                @{
+                                    var age = DateTime.Now.Year - patient.DateOfBirth.Year;
+                                    if (DateTime.Now.DayOfYear < patient.DateOfBirth.DayOfYear)
+                                    {
+                                        age--;
+                                    }
+                                }
+                                @age
+                            </td>
+                            <td class="action-buttons">
+                                <a class="btn btn-sm btn-outline-warning" asp-action="EditPatient" asp-route-id="@patient.PatientId">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+                                <a class="btn btn-sm btn-outline-info" asp-action="ViewAppointments" asp-route-id="@patient.PatientId" asp-route-role="patient">
+                                    <i class="bi bi-calendar-check-fill"></i> Appointments
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger" asp-action="DeletePatient" asp-route-id="@patient.PatientId" onclick="return confirm('Are you sure you want to delete this patient?')">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("patientSearch").addEventListener("keyup", function () {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll("table tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(" ");
+
+                if (rowText.includes(searchValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+
+}

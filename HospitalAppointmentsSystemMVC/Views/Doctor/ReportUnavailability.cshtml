@@ -1,0 +1,19 @@
+﻿@model UnavailabilityViewModel
+
+<h2>Report Unavailability</h2>
+
+<form asp-action="ReportUnavailability" method="post">
+    <div class="form-group">
+        <label asp-for="UnavailableDate"></label>
+        <input asp-for="UnavailableDate" class="form-control" type="date" />
+        <span asp-validation-for="UnavailableDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Reason"></label>
+        <textarea asp-for="Reason" class="form-control"></textarea>
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Submit</button>
+</form>

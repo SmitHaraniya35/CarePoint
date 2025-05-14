@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Hospital Home Page";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(to right, #0066cc, #3399ff);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+    .hero-section .btn {
+        margin-top: 20px;
+    }
+
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .contact-box h4 {
+        color: #0066cc;
+        font-weight: 600;
+    }
+
+    .contact-box p {
+        font-size: 1.1rem;
+    }
+
+    a.btn-social {
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="display-4">Welcome to CarePoint Hospital</h1>
+        <p class="lead">Your health is our top priority. Delivering compassionate, expert care to every patient.</p>
+        <a href="#appointments" class="btn btn-light btn-lg">Book an Appointment</a>
+    </div>
+</section>
+
+<!-- About Us -->
+<section id="about" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="section-title">About Us</h2>
+        <p class="lead">CarePoint Hospital provides world-class healthcare with cutting-edge technology and experienced professionals. We are committed to patient-centric care with a heart.</p>
+    </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/cardiology.jpg" class="card-img-top" alt="Cardiology">
+                    <div class="card-body">
+                        <h5 class="card-title">Cardiology</h5>
+                        <p class="card-text">Expert diagnosis and treatment of heart-related conditions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/neurology.jpg" class="card-img-top" alt="Neurology">
+                    <div class="card-body">
+                        <h5 class="card-title">Neurology</h5>
+                        <p class="card-text">Comprehensive care for brain and nervous system disorders.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/pediatrics.jpg" class="card-img-top" alt="Pediatrics">
+                    <div class="card-body">
+                        <h5 class="card-title">Pediatrics</h5>
+                        <p class="card-text">Dedicated child care with experienced pediatricians.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Appointments -->
+<section id="appointments" class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Book an Appointment</h2>
+        <p class="lead">Secure your appointment with our healthcare specialists today.</p>
+        <a asp-action="BookAppointment" class="btn btn-primary btn-lg">Book Now</a>
+    </div>
+</section>
+
+<!-- Contact Us -->
+<section id="contact" class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="lead">We're here to help. Reach out to us for any queries or support.</p>
+        <div class="row text-center mt-4">
+            <div class="col-md-4 contact-box">
+                <h4>Phone</h4>
+                <p>+123 456 7890</p>
+            </div>
+            <div class="col-md-4 contact-box">
+                <h4>Email</h4>
+                <p>info@carepoint.com</p>
+            </div>
+            <div class="col-md-4 contact-box">
+                <h4>Address</h4>
+                <p>123 Health Street, Wellness City</p>
+            </div>
+        </div>
+    </div>
+</section>

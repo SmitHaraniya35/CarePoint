@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Doctor Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .hover-zoom {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-zoom:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-gradient-primary {
+        background: linear-gradient(135deg, #007bff, #3399ff);
+    }
+
+    .card-gradient-success {
+        background: linear-gradient(135deg, #28a745, #5cd65c);
+    }
+
+    .card-gradient-info {
+        background: linear-gradient(135deg, #17a2b8, #5bc0de);
+    }
+
+    .card-gradient-warning {
+        background: linear-gradient(135deg, #ffc107, #ffdd57);
+    }
+
+    .card-gradient-danger {
+        background: linear-gradient(135deg, #dc3545, #ff6b6b);
+    }
+
+    .card-gradient-secondary {
+        background: linear-gradient(135deg, #6c757d, #adb5bd);
+    }
+
+    .card-title, .card-text {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+        font-weight: 700;
+    }
+
+    hr {
+        border-top: 2px solid #007bff;
+        margin: 1rem auto;
+    }
+
+    .alert-info {
+        background-color: #eaf4f9;
+        border-color: #b8d9e8;
+        color: #31708f;
+        font-weight: bold;
+    }
+
+    .alert-info .btn-close {
+        background-color: #31708f;
+    }
+
+        .alert-info .btn-close:hover {
+            background-color: #2a5d6d;
+        }
+
+</style>
+
+
+<h2 class="text-center text-capitalize mb-1">Welcome, Doctor!</h2>
+<p class="text-center mb-4 text-muted">Here you can view appointments, give prescriptions, and manage your schedule.</p>
+
+<hr />
+
+@if (TempData["FirstLoginMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong> Welcome! </strong>To complete your account setup, please take a moment to <a asp-controller="User" asp-action="ManageAccount">update your profile information.</a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<div class="row mb-4 g-3">
+    <div class="col-md-4">
+        <div class="card text-white card-gradient-primary shadow-lg h-100 rounded-4 border-0 hover-zoom">
+            <div class="card-body text-center">
+                <i class="bi bi-calendar-day display-4 mb-2"></i>
+                <h5 class="card-title">Today's Appointments</h5>
+                <p class="card-text display-6 fw-bold">@ViewBag.TodaysAppointmentsCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success shadow-lg h-100 rounded-4 border-0 hover-zoom">
+            <div class="card-body text-center">
+                <i class="bi bi-person-check display-4 mb-2"></i>
+                <h5 class="card-title fw-semibold">Patients Consulted</h5>
+                <p class="card-text display-6 fw-bold">@ViewBag.TotalPatientsConsulted</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning shadow-lg h-100 rounded-4 border-0 hover-zoom">
+            <div class="card-body text-center">
+                <i class="bi bi-clock-history display-4 mb-2"></i>
+                <h5 class="card-title fw-semibold">Upcoming Appointments</h5>
+                <p class="card-text display-6 fw-bold">@ViewBag.UpcomingAppointmentsCount</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
