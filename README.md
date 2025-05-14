@@ -98,11 +98,31 @@ Patients can:
 ## 📌 Technologies Used
 - ASP.NET MVC Framework
 - SQL Server (Database)
-- HTML/CSS/JavaScript
+- HTML/CSS/JavaScript/Jquery
 - Bootstrap (for UI)
 - SMTP (for sending email notifications)
 
 ---
+
+## 🖼️ Screenshots
+
+### 🔹 Signup & Login
+![Signup](Images/signup)
+![Login](Images/login)
+
+### 🔹 Admin Dashboard
+![Admin Dashboard](Images/dashboard.png)
+
+### 🔹 Doctor Dashboard
+![Doctor Dashboard](Images/doctorhome.png)
+
+### 🔹 Doctor Appointments
+![Doctor Appointments](Images/doctorappointment.png)
+
+### 🔹 Doctor Schedules
+![Doctor Schedules](Images/doctorschedule.png)
+
+
 
 ## 📬 Contact
 For any issues or contributions, feel free to raise a GitHub issue or contact the maintainer.
