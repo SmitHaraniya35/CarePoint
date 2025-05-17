@@ -9,13 +9,10 @@ namespace HospitalAppointmentsSystemMVC.Models
         public int FeedbackId { get; set; }
 
         [Required]
-        public int PatientId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        public int DoctorId { get; set; }
-
-        [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string Comment { get; set; }
 
         [Required]
@@ -23,11 +20,9 @@ namespace HospitalAppointmentsSystemMVC.Models
         public int Rating { get; set; }
 
         // Navigation
-        [ForeignKey("PatientId")]
-        public Patient Patient { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
-        [ForeignKey("DoctorId")]
-        public Doctor Doctor { get; set; }
 
     }
 }

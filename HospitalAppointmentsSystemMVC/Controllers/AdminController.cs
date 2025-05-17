@@ -785,17 +785,29 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             }
 
             var feedbacks = await _context.Feedbacks
-                .Include(f => f.Patient)
-                .Include(f => f.Doctor)
+                .Include(f => f.User)
                 .Select(f => new FeedbackViewModel
                 {
                     FeedbackId = f.FeedbackId,
-                    PatientName = f.Patient.FullName,
-                    DoctorName = f.Doctor.FullName,
+                    UserEmail = f.User.Email,
                     Comment = f.Comment,
                     Rating = f.Rating
                 })
                 .ToListAsync();
+
+            foreach(var feedback in feedbacks)
+            {
+                feedback.UserName = _context.Patients
+                    .Include(p => p.User)
+                    .Where(p => p.User!.Email == feedback.UserEmail)
+                    .Select(p => p.FullName)
+                    .FirstOrDefault()
+                    ?? _context.Doctors
+                    .Include(d => d.User)
+                    .Where(d => d.User!.Email == feedback.UserEmail)
+                    .Select(d => d.FullName)
+                    .FirstOrDefault();
+            }
 
             return View(feedbacks);
         }

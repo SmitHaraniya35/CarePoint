@@ -16,42 +16,107 @@
         margin-right: 10px;
     }
 
+    .table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .action-buttons .btn {
+        margin-right: 5px;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
 
 </style>
 
 
-<h2>Patient Feedback</h2>
-<hr/>
+<div class="container-fluid px-4">
+    <h2 class="text-center mb-3">Appointments</h2>
+    <hr />
+
+
 @if (!Model.Any())
 {
     <div class="no-feedback-message text-center p-4 rounded" style="background-color: #e9f7fd; color: #5b6d7e; border: 1px solid #aed6f1;">
         <i class="bi bi-info-circle-fill" style="font-size: 1.5rem; color: #007bff;"></i>
         <span>No feedbacks found.</span>
     </div>
-
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Comment</th>
-                <th>Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var feedback in Model)
-            {
-                <tr>
-                    <td>@feedback.PatientName</td>
-                    <td>@feedback.DoctorName</td>
-                    <td>@feedback.Comment</td>
-                    <td>@feedback.Rating</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        <div class="card shadow">
+            <div class="card-header">
+                Feedbacks Records
+            </div>
+            <div class="card-body table-responsive">
+                <div class="mb-3">
+                    <input type="text" id="feedbackSearch" class="form-control" placeholder="Search Feedback by any field...">
+                </div>
+                <table class="table table-bordered align-middle table-hover">
+                    <thead>
+                        <tr>
+                            <th>FeedbackId</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Comment</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var feedback in Model)
+                        {
+                            <tr>
+                                <td>@feedback.FeedbackId</td>
+                                <td>@feedback.UserName</td>
+                                <td>@feedback.UserEmail</td>
+                                <td>@feedback.Comment</td>
+                                <td>@feedback.Rating</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    
+}
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("feedbackSearch").addEventListener("keyup", function () {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll("table tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(" ");
+
+                if (rowText.includes(searchValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
+
 
 }

@@ -71,20 +71,6 @@ namespace HospitalAppointmentsSystemMVC.Models
                 .HasForeignKey<Prescription>(p => p.AppointmentId)
                 .OnDelete(DeleteBehavior.Restrict); // Deleting Appointment deletes Prescription
 
-            // PATIENT <--> FEEDBACK (One-to-Many)
-            modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.Patient)
-                .WithMany()
-                .HasForeignKey(f => f.PatientId)
-                .OnDelete(DeleteBehavior.Restrict); // Deleting Patient deletes Feedback
-
-            // DOCTOR <--> FEEDBACK (One-to-Many)
-            modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.Doctor)
-                .WithMany()
-                .HasForeignKey(f => f.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict); // Deleting Doctor deletes Feedback
-
             // DOCTOR <--> DOCTOR AVAILABILITY (One-to-Many)
             modelBuilder.Entity<DoctorAvailability>()
                 .HasOne(da => da.Doctor)

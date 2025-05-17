@@ -341,5 +341,38 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             return View(model);
         }
 
+        public IActionResult SubmitFeedback()
+        {
+            return RedirectToAction("Index", "Home"); 
+        }
+        [HttpPost]
+        public IActionResult SubmitFeedback(string email, string comment, int rating)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(comment) || rating < 1 || rating > 5)
+            {
+                TempData["Error"] = "Please fill in all fields and provide a valid rating.";
+                return RedirectToAction("Index", "Home"); // Replace with the actual view name
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var feedback = new Feedback{
+                UserId = user.UserId,
+                Comment = comment,
+                Rating = rating
+            };
+
+            // Save to database or process feedback as needed
+            _context.Feedbacks.Add(feedback);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Thank you for your feedback!";
+            return RedirectToAction("Index", "Home"); 
+        }
+
     }
 }
