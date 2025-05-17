@@ -1,15 +1,22 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
 namespace HospitalAppointmentsSystemMVC.Models
 {
     public class EmailService
     {
+        private readonly AppDbContext _context;
         private readonly string _smtpServer = "smtp.gmail.com";     // e.g., smtp.gmail.com
         private readonly int _smtpPort = 587;                              // TLS port
         private readonly string _smtpUsername = "smeetce6867@gmail.com";
         private readonly string _smtpPassword = "dfnj kxfc vgzu isot";
+
+        public EmailService(AppDbContext context) 
+        {
+            _context = context;
+        }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {

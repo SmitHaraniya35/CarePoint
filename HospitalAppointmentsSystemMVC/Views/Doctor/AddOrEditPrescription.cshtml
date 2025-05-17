@@ -67,6 +67,15 @@
                 }
             </h2>
             <hr class="mb-4" />
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
             <form asp-action="AddOrEditPrescription" method="post">
                 <input type="hidden" name="PrescriptionId" value="@Model.PrescriptionId" />
                 <input type="hidden" name="AppointmentId" value="@Model.AppointmentId" />

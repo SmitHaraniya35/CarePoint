@@ -13,6 +13,30 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\ayurved.jpg",
+      "PackagePath": "staticwebassets\\images\\ayurved.jpg"
+    },
+    {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\dermatology.jpg",
+      "PackagePath": "staticwebassets\\images\\dermatology.jpg"
+    },
+    {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\general.jpg",
+      "PackagePath": "staticwebassets\\images\\general.jpg"
+    },
+    {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\homeopathy.jpg",
+      "PackagePath": "staticwebassets\\images\\homeopathy.jpg"
+    },
+    {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\internal.jpg",
+      "PackagePath": "staticwebassets\\images\\internal.jpg"
+    },
+    {
+      "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\pediatrics.jpg",
+      "PackagePath": "staticwebassets\\images\\pediatrics.jpg"
+    },
+    {
       "Id": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

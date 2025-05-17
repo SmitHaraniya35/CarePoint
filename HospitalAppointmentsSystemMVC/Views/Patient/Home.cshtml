@@ -17,3 +17,11 @@
 <h2 class="text-center text-capitalize mb-1">Welcome, Patient!</h2>
 <p class="text-center mb-4 text-muted">You can now book appointments, view your history, and manage your profile.</p>
 <hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="font-size: 1rem; font-weight: 500; margin-bottom: 20px;">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

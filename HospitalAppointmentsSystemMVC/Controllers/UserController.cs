@@ -11,11 +11,22 @@ namespace HospitalAppointmentsSystemMVC.Controllers
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly EmailService _emailService;
 
-        public UserController(AppDbContext context)
+        public UserController(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
+
+        private bool IsUserLoggedIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("UserRole");
+
+            return userId != null;
+        }
+
 
         public IActionResult Index()
         {
@@ -124,7 +135,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         }
 
         public IActionResult ManageAccount()
-        {
+        { 
+            if (!IsUserLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -132,6 +147,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageAccount(string username, string currentPassword, string newPassword, string confirmPassword)
         {
+            if (!IsUserLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.Session.GetInt32("UserId");
@@ -232,8 +252,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                                 $"Thank you.";
 
 
-                var _emailService = new EmailService();
-
+                //var _emailService = new EmailService();
                 await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
 
                 //Console.WriteLine("successfully sent");

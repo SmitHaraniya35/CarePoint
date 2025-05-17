@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "R+6G9CErRjCN1XMibIrdEQY9eT7PjAkoILoatzyCbiE=",
+  "Hash": "D0C/ZiLGV01D7WRuoR4PthvaSw86Gn7/vvhYgyV0olQ=",
   "Source": "HospitalAppointmentsSystemMVC",
   "BasePath": "_content/HospitalAppointmentsSystemMVC",
   "Mode": "Default",
@@ -99,6 +99,132 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\ayurved.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/ayurved#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ywz4l3xgsq",
+      "Integrity": "0r8WesZ2yFp6Uy29dKbKXrniKpn/XMzkjrxwcXJdNU0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ayurved.jpg"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\dermatology.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/dermatology#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "eik3qdnv7z",
+      "Integrity": "apdROe8dmybxRUEk0ZgGlmdfMnjQ0kPe5P1qvp7J1vE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\dermatology.jpg"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\general.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/general#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wmyiuyokxs",
+      "Integrity": "KFrgD3E1Bn2kG9jlraZHsK44Cc0hDe4vrTEwLjQdeQ4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\general.jpg"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\homeopathy.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/homeopathy#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "cvyzhhov57",
+      "Integrity": "SHAml+KMkGg8y5QASJ4rQoshrvCOaV44doPaCFvbKJA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\homeopathy.jpg"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\internal.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/internal#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rnbk6u0rde",
+      "Integrity": "BzbNmFXiVqVhjYKVzkgRG8xwBKDDsHZ7FykszzY0gko=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\internal.jpg"
+    },
+    {
+      "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\pediatrics.jpg",
+      "SourceId": "HospitalAppointmentsSystemMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\",
+      "BasePath": "_content/HospitalAppointmentsSystemMVC",
+      "RelativePath": "images/pediatrics#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "f580yu5oe1",
+      "Integrity": "QxOK4mYOxPJtKOsV3CqVox8tQAJBm/XDcUoiKW22G5Y=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\pediatrics.jpg"
     },
     {
       "Identity": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\js\\site.js",
@@ -1645,6 +1771,498 @@
         {
           "Name": "integrity",
           "Value": "sha256-TAuM/fAseVqmZ3taPUTH4EAtLQHzNrAyAtv29m4F6SA="
+        }
+      ]
+    },
+    {
+      "Route": "images/ayurved.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\ayurved.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13388"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0r8WesZ2yFp6Uy29dKbKXrniKpn/XMzkjrxwcXJdNU0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:12:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0r8WesZ2yFp6Uy29dKbKXrniKpn/XMzkjrxwcXJdNU0="
+        }
+      ]
+    },
+    {
+      "Route": "images/ayurved.ywz4l3xgsq.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\ayurved.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13388"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0r8WesZ2yFp6Uy29dKbKXrniKpn/XMzkjrxwcXJdNU0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:12:02 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ywz4l3xgsq"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ayurved.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0r8WesZ2yFp6Uy29dKbKXrniKpn/XMzkjrxwcXJdNU0="
+        }
+      ]
+    },
+    {
+      "Route": "images/dermatology.eik3qdnv7z.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\dermatology.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7115"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"apdROe8dmybxRUEk0ZgGlmdfMnjQ0kPe5P1qvp7J1vE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:18:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "eik3qdnv7z"
+        },
+        {
+          "Name": "label",
+          "Value": "images/dermatology.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-apdROe8dmybxRUEk0ZgGlmdfMnjQ0kPe5P1qvp7J1vE="
+        }
+      ]
+    },
+    {
+      "Route": "images/dermatology.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\dermatology.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7115"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"apdROe8dmybxRUEk0ZgGlmdfMnjQ0kPe5P1qvp7J1vE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:18:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-apdROe8dmybxRUEk0ZgGlmdfMnjQ0kPe5P1qvp7J1vE="
+        }
+      ]
+    },
+    {
+      "Route": "images/general.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\general.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5816"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KFrgD3E1Bn2kG9jlraZHsK44Cc0hDe4vrTEwLjQdeQ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:13:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-KFrgD3E1Bn2kG9jlraZHsK44Cc0hDe4vrTEwLjQdeQ4="
+        }
+      ]
+    },
+    {
+      "Route": "images/general.wmyiuyokxs.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\general.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5816"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KFrgD3E1Bn2kG9jlraZHsK44Cc0hDe4vrTEwLjQdeQ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:13:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wmyiuyokxs"
+        },
+        {
+          "Name": "label",
+          "Value": "images/general.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-KFrgD3E1Bn2kG9jlraZHsK44Cc0hDe4vrTEwLjQdeQ4="
+        }
+      ]
+    },
+    {
+      "Route": "images/homeopathy.cvyzhhov57.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\homeopathy.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11480"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SHAml+KMkGg8y5QASJ4rQoshrvCOaV44doPaCFvbKJA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:12:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cvyzhhov57"
+        },
+        {
+          "Name": "label",
+          "Value": "images/homeopathy.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-SHAml+KMkGg8y5QASJ4rQoshrvCOaV44doPaCFvbKJA="
+        }
+      ]
+    },
+    {
+      "Route": "images/homeopathy.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\homeopathy.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11480"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SHAml+KMkGg8y5QASJ4rQoshrvCOaV44doPaCFvbKJA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:12:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-SHAml+KMkGg8y5QASJ4rQoshrvCOaV44doPaCFvbKJA="
+        }
+      ]
+    },
+    {
+      "Route": "images/internal.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\internal.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10075"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BzbNmFXiVqVhjYKVzkgRG8xwBKDDsHZ7FykszzY0gko=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:13:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-BzbNmFXiVqVhjYKVzkgRG8xwBKDDsHZ7FykszzY0gko="
+        }
+      ]
+    },
+    {
+      "Route": "images/internal.rnbk6u0rde.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\internal.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10075"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BzbNmFXiVqVhjYKVzkgRG8xwBKDDsHZ7FykszzY0gko=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 06:13:36 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rnbk6u0rde"
+        },
+        {
+          "Name": "label",
+          "Value": "images/internal.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-BzbNmFXiVqVhjYKVzkgRG8xwBKDDsHZ7FykszzY0gko="
+        }
+      ]
+    },
+    {
+      "Route": "images/pediatrics.f580yu5oe1.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\pediatrics.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7481"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"QxOK4mYOxPJtKOsV3CqVox8tQAJBm/XDcUoiKW22G5Y=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 05:58:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "f580yu5oe1"
+        },
+        {
+          "Name": "label",
+          "Value": "images/pediatrics.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-QxOK4mYOxPJtKOsV3CqVox8tQAJBm/XDcUoiKW22G5Y="
+        }
+      ]
+    },
+    {
+      "Route": "images/pediatrics.jpg",
+      "AssetFile": "D:\\College\\My Project\\HospitalAppointmentsSystemMVC\\HospitalAppointmentsSystemMVC\\wwwroot\\images\\pediatrics.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7481"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"QxOK4mYOxPJtKOsV3CqVox8tQAJBm/XDcUoiKW22G5Y=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 17 May 2025 05:58:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-QxOK4mYOxPJtKOsV3CqVox8tQAJBm/XDcUoiKW22G5Y="
         }
       ]
     },

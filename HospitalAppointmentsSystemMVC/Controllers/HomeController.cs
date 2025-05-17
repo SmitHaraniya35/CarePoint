@@ -41,5 +41,5 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             return RedirectToAction("login", "User");
         }
-    }
+    }   
 }

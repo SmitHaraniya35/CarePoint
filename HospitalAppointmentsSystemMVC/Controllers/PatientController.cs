@@ -16,11 +16,20 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             _context = context;
         }
 
+        private bool IsPatientLoggedIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("UserRole");
+
+            return userId != null && role != null && role.ToLower() == "patient";
+        }
+
+
         public IActionResult Home()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (userId == null)
+            if (!IsPatientLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -40,7 +49,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
 
-            if (patientId == null)
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -96,7 +105,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
 
-            if (patientId == null)
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -126,8 +135,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public IActionResult BookAppointment()
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
-            if (patientId == null)
+
+            if (!IsPatientLoggedIn() || patientId == null)
+            {
                 return RedirectToAction("Index", "Home");
+            }
 
             // Load unique specializations from doctors
             var specializations = _context.Doctors
@@ -135,8 +147,6 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 .Distinct()
                 .ToList();
 
-            // Example time slots (customize if needed)
-            ViewBag.TimeSlots = new List<string> { "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "03:00 PM" };
             ViewBag.Specializations = specializations;
 
             return View(new BookAppointmentViewModel());
@@ -147,13 +157,17 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public async Task<IActionResult> BookAppointment(BookAppointmentViewModel model)
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
-            if (patientId == null)
+
+            if (!IsPatientLoggedIn() || patientId == null)
+            {
                 return RedirectToAction("Index", "Home");
+            }
 
             if (!ModelState.IsValid)
             {
                 // check what happen?
-                ViewBag.TimeSlots = new List<string> { "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "03:00 PM" };
+                //ViewBag.TimeSlots = new List<string> { "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "03:00 PM" };
+                TempData["ErrorMessage"] = "Something went wrong while booking an appointment.";
                 ViewBag.Specializations = _context.Doctors.Select(d => d.Specialization).Distinct().ToList();
                 return View(model);
             }
@@ -171,14 +185,20 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             _context.Appointments.Add(appointment);
             _context.SaveChanges();
 
-            TempData["Success"] = "Appointment booked successfully!";
-            return RedirectToAction("Home");
+            TempData["SuccessMessage"] = "Appointment booked successfully!";
+            return RedirectToAction("ViewAppointments");
         }
-
 
         [HttpGet]
         public JsonResult GetDoctorsBySpecialization(string specialization)
         {
+            var patientId = HttpContext.Session.GetInt32("PatientId");
+
+            if (!IsPatientLoggedIn() || patientId == null)
+            {
+                return Json(null);
+            }
+
             var doctors = _context.Doctors
                 .Where(d => d.Specialization == specialization)
                 .Select(d => new
@@ -194,6 +214,12 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [HttpGet]
         public JsonResult GetAvailableTimeSlots(int doctorId, DateTime appointmentDate)
         {
+            var patientId = HttpContext.Session.GetInt32("PatientId");
+
+            if (!IsPatientLoggedIn() || patientId == null)
+            {
+                return Json(null);
+            }
 
             var dayOfWeek = appointmentDate.DayOfWeek;
 
@@ -248,7 +274,8 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public JsonResult GetAvailableDates(int doctorId)
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
-            if (patientId == null)
+
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return Json(new
                 {
@@ -333,7 +360,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public JsonResult GetDoctorSchedules(int doctorId)
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
-            if (patientId == null)
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return Json(new
                 {
@@ -360,7 +387,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
 
-            if (patientId == null)
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -390,7 +417,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             var patientId = HttpContext.Session.GetInt32("PatientId");
 
-            if (patientId == null)
+            if (!IsPatientLoggedIn() || patientId == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -402,6 +429,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     Console.WriteLine(error.ErrorMessage);
                 }
 
+                TempData["ErrorMessage"] = "Something went wrong while updating your profile.";
                 return View(model);
             }
 
@@ -419,12 +447,19 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             patient.User!.Email = model.Email;
             _context.SaveChanges();
 
-            ViewBag.SuccessMessage = "Profile updated successfully!";
+            TempData["SuccessMessage"] = "Your profile updated successfully!";
             return View("Home");
         }
 
         public IActionResult CancelAppointment(int id)
         {
+            var patientId = HttpContext.Session.GetInt32("PatientId");
+
+            if (!IsPatientLoggedIn() || patientId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var appointment = _context.Appointments.FirstOrDefault(a => a.AppointmentId == id);
             if (appointment == null)
             {
@@ -436,6 +471,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             appointment.CancellationReason = "Patient is not available";
             _context.SaveChanges();
 
+            TempData["SuccessMessage"] = "your appointment cancelled successfully.";
             return RedirectToAction("ViewAppointments");
         }
     }

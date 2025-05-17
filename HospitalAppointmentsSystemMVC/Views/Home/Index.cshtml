@@ -38,6 +38,23 @@
         padding: 8px 20px;
         font-size: 1rem;
     }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
 </style>
 
 <!-- Hero Section -->
@@ -64,19 +81,37 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card shadow-sm mb-4">
-                    <img src="~/images/cardiology.jpg" class="card-img-top" alt="Cardiology">
+                    <img src="~/images/ayurved.jpg" class="card-img-top" alt="BAMS">
                     <div class="card-body">
-                        <h5 class="card-title">Cardiology</h5>
-                        <p class="card-text">Expert diagnosis and treatment of heart-related conditions.</p>
+                        <h5 class="card-title">Ayurvedic Treatment</h5>
+                        <p class="card-text">Traditional Ayurvedic medical treatment by certified professionals.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card shadow-sm mb-4">
-                    <img src="~/images/neurology.jpg" class="card-img-top" alt="Neurology">
+                    <img src="~/images/homeopathy.jpg" class="card-img-top" alt="BHMS">
                     <div class="card-body">
-                        <h5 class="card-title">Neurology</h5>
-                        <p class="card-text">Comprehensive care for brain and nervous system disorders.</p>
+                        <h5 class="card-title">Homeopathic Care</h5>
+                        <p class="card-text">Homeopathic solutions for long-term wellness and chronic care.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/general.jpg" class="card-img-top" alt="MBBS">
+                    <div class="card-body">
+                        <h5 class="card-title">General Medicine</h5>
+                        <p class="card-text">General allopathic diagnosis and treatments by expert doctors.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/internal.jpg" class="card-img-top" alt="MD">
+                    <div class="card-body">
+                        <h5 class="card-title">Internal Medicine</h5>
+                        <p class="card-text">Advanced specialized medical services for complex conditions.</p>
                     </div>
                 </div>
             </div>
@@ -85,13 +120,23 @@
                     <img src="~/images/pediatrics.jpg" class="card-img-top" alt="Pediatrics">
                     <div class="card-body">
                         <h5 class="card-title">Pediatrics</h5>
-                        <p class="card-text">Dedicated child care with experienced pediatricians.</p>
+                        <p class="card-text">Comprehensive child healthcare from infancy through adolescence.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <img src="~/images/dermatology.jpg" class="card-img-top" alt="Dermatology">
+                    <div class="card-body">
+                        <h5 class="card-title">Dermatology</h5>
+                        <p class="card-text">Specialized care for skin, hair, and nail conditions by expert dermatologists.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Appointments -->
 <section id="appointments" class="bg-light py-5">

@@ -1,5 +1,11 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\ayurved.jpg
+wwwroot\images\dermatology.jpg
+wwwroot\images\general.jpg
+wwwroot\images\homeopathy.jpg
+wwwroot\images\internal.jpg
+wwwroot\images\pediatrics.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

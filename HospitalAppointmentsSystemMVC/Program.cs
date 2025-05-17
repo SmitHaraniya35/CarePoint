@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContextPool<AppDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyAppDbConnection")));
+builder.Services.AddHostedService<EmailReminderService>();
+builder.Services.AddScoped<EmailService>();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -27,6 +30,7 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseStatusCodePagesWithReExecute("/Home/Error");
     app.UseHsts();
 }
 

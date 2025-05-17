@@ -77,6 +77,14 @@
             <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
             <hr class="mb-4" />
 
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
             <form asp-action="BookAppointment" method="post">
                 <div class="form-group mb-3">
                     <label for="Specialization" class="form-label text-uppercase fw-bold">Specialization</label>
@@ -159,6 +167,16 @@
             });
         });
 
+        function getDayName(dayNumber) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[dayNumber]; 
+        }
+
+        function formatTime(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            return `${hours}:${minutes}`;
+        }
+
         $('#DoctorId').change(function () {
             const doctorId = $(this).val();
 
@@ -181,17 +199,23 @@
 
             $.get('/Patient/GetDoctorSchedules', { doctorId }, function (data) {
                 if (data.length > 0) {
-                    data.forEach(schedule => {
-                        $('#doctorScheduleBody').append(`
-                            <tr>
-                                <td>${getDayName(schedule.day)}</td>
-                                <td>${formatTime(schedule.startTime)}</td>
-                                <td>${formatTime(schedule.endTime)}</td>
-                            </tr>
-                        `);
+                    const scheduleBody = $('#doctorScheduleBody');
+                    scheduleBody.fadeOut(500, function () {
+                        scheduleBody.empty();
+                        data.forEach(schedule => {
+                            scheduleBody.append(`
+                                <tr>
+                                    <td>${getDayName(schedule.day)}</td>
+                                    <td>${formatTime(schedule.startTime)}</td>
+                                    <td>${formatTime(schedule.endTime)}</td>
+                                </tr>
+                            `);
+                        });
+                        $('#doctorScheduleContainer').fadeIn(1000);
+                        scheduleBody.fadeIn(500);
                     });
-                    $('#doctorScheduleContainer').show();
                 }
+
             });
         });
 

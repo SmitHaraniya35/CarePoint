@@ -51,12 +51,21 @@
         <div class="card-body">
             <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
             <hr class="mb-4" />
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
             <form asp-action="EditAvailability" method="post">
                 <input type="hidden" name="availabilityId" value="@Model.Availabilities.FirstOrDefault()?.AvailabilityId" />
-
+                 
                 <div class="form-group mb-3">
                     <label for="Day" class="form-label">Day</label>
-                    <select name="Availabilities[0].Day" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()">
+                    <select name="Availabilities[0].Day" class="form-control" asp-items="Html.GetEnumSelectList<DayOfWeek>()" disabled>
                         <option value="">@Model.Availabilities.FirstOrDefault()?.Day</option>
                     </select>
                 </div>

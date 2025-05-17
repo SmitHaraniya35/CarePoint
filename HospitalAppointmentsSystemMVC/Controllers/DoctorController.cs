@@ -15,14 +15,21 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             _context = context;
         }
 
+        private bool IsDoctorLoggedIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("UserRole");
+
+            return userId != null && role != null && role.ToLower() == "doctor";
+        }
+
+
         public async Task<IActionResult> Home()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (userId == null)
-            {
+            if (!IsDoctorLoggedIn())
                 return RedirectToAction("Index", "Home");
-            }
 
             var doctorId = _context.Doctors
                 .Include(d => d.User)
@@ -53,10 +60,8 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             var doctorId = HttpContext.Session.GetInt32("DoctorId");
 
-            if (doctorId == null)
-            {
+            if (!IsDoctorLoggedIn() || doctorId == null)
                 return RedirectToAction("Index", "Home");
-            }
 
             var doctor = _context.Doctors
                 .FirstOrDefault(d => d.DoctorId == doctorId.Value);
@@ -106,6 +111,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public IActionResult CancelAppointment(int id)
         {
+            var doctorId = HttpContext.Session.GetInt32("DoctorId");
+
+            if (!IsDoctorLoggedIn() || doctorId == null)
+                return RedirectToAction("Index", "Home");
+
             var appointment = _context.Appointments.FirstOrDefault(a => a.AppointmentId == id);
             if (appointment == null)
             {
@@ -117,11 +127,17 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             appointment.CancellationReason = "Doctor is not available";
             _context.SaveChanges();
 
+            TempData["SuccessMessage"] = "Your appointment cancelled successfully by you.";
             return RedirectToAction("ViewAppointments");
         }
 
         public IActionResult MarkMissedAppointment(int id)
         {
+            var doctorId = HttpContext.Session.GetInt32("DoctorId");
+
+            if (!IsDoctorLoggedIn() || doctorId == null)
+                return RedirectToAction("Index", "Home");
+
             var appointment = _context.Appointments.FirstOrDefault(a => a.AppointmentId == id);
             if (appointment == null)
             {
@@ -131,19 +147,19 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             appointment.Status = "Missed";
             _context.SaveChanges();
 
+            TempData["SuccessMessage"] = "Your appointment marked as Missed successfully by you.";
             return RedirectToAction("ViewAppointments");
         }
 
         [HttpGet]
         public async Task<IActionResult> AddOrEditPrescription(int id)
         {
-            int appointmentId = id;
             var doctorId = HttpContext.Session.GetInt32("DoctorId");
 
-            if (doctorId == null)
-            {
+            if (!IsDoctorLoggedIn() || doctorId == null)
                 return RedirectToAction("Index", "Home");
-            }
+
+            int appointmentId = id;
 
             var appointment = await _context.Appointments
                 .Include(a => a.Doctor)
@@ -174,7 +190,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     AppointmentId = prescription.AppointmentId,
                     Diagnosis = prescription.Diagnosis,
                     Medicines = prescription.Medicines,
-                    Notes = prescription.Notes
+                    Notes = prescription.Notes!
                 };
                 return View(EditViewModel);
             }
@@ -194,15 +210,14 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["ErrorMessage"] = "Something went wrong while adding/updating prescription.";
                 return View(model);
             }
 
             var doctorId = HttpContext.Session.GetInt32("DoctorId");
 
-            if (doctorId == null)
-            {
+            if (!IsDoctorLoggedIn() || doctorId == null)
                 return RedirectToAction("Index", "Home");
-            }
 
             var appointment = await _context.Appointments
                 .Include(a => a.Doctor)
@@ -228,6 +243,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
                 _context.Prescriptions.Add(newPrescription);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Prescription added successfully. Appointment has been marked as completed.";
             }
             else
             {
@@ -246,6 +262,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
                 _context.Prescriptions.Update(prescriptionToUpdate);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Prescription updated successfully.";
             }
 
             return RedirectToAction("ViewAppointments");
@@ -255,10 +272,10 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public IActionResult ManageDoctorProfile()
         {
             var doctorId = HttpContext.Session.GetInt32("DoctorId");
-            if (doctorId == null)
-            {
-                return RedirectToAction("Index", "home");
-            }
+
+            if (!IsDoctorLoggedIn() || doctorId == null)
+                return RedirectToAction("Index", "Home");
+
             var doctor = _context.Doctors.Include(d => d.User).FirstOrDefault(d => d.DoctorId == doctorId);
 
             if (doctor == null)
@@ -281,7 +298,15 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public async Task<IActionResult> ManageDoctorProfile(DoctorViewModel model)
         {
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Something went wrong while updating your profile.";
                 return View(model);
+            }
+
+            var doctorId = HttpContext.Session.GetInt32("DoctorId");
+
+            if (!IsDoctorLoggedIn() || doctorId == null)
+                return RedirectToAction("Index", "Home");
 
             var doctor = await _context.Doctors
                 .Include(d => d.User)
@@ -295,18 +320,17 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             doctor.User.Email = model.Email;
 
             _context.SaveChanges();
+            TempData["SuccessMessage"] = "Your profile updated successfully.";
             return RedirectToAction("Home");
-
-
         }
     
         public async Task<IActionResult> DoctorSchedules()
         {
             var doctorId = HttpContext.Session.GetInt32("DoctorId");
-            if (doctorId == null)
-            {
-                return RedirectToAction("Index", "home");
-            }
+
+            if (!IsDoctorLoggedIn() || doctorId == null)
+                return RedirectToAction("Index", "Home");
+
             var doctor = _context.Doctors.Include(d => d.User).FirstOrDefault(d => d.DoctorId == doctorId);
 
             if (doctor == null)

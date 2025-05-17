@@ -13,17 +13,28 @@ namespace HospitalAppointmentsSystemMVC.Controllers
     public class AdminController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly EmailService _emailService;
 
-        public AdminController(AppDbContext context)
+        public AdminController(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
+
+        private bool IsAdminLoggedIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("UserRole");
+
+            return userId != null && role != null && role.ToLower() == "admin";
+        }
+
 
         public IActionResult Dashboard()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (userId == null)
+            if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -58,11 +69,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             var data = _context.Appointments
                 .Where(a => a.AppointmentDate >= today)
-                .AsEnumerable() // Switches to client-side LINQ
+                .AsEnumerable() 
                 .GroupBy(a => a.AppointmentDate.Date)
                 .Select(g => new ChartDataPoint
                 {
-                    Label = g.Key.ToString("MMM dd"), // This is now safe
+                    Label = g.Key.ToString("MMM dd"), 
                     Value = g.Count()
                 })
                 .OrderBy(dp => dp.Label)
@@ -76,7 +87,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             var data = _context.Appointments
                 .Include(a => a.Doctor)
                 .Where(a => a.Status.ToLower() != "cancelled")
-                .GroupBy(a => a.Doctor.FullName) // or $"{a.Doctor.FirstName} {a.Doctor.LastName}" if separate
+                .GroupBy(a => a.Doctor!.FullName) 
                 .Select(g => new ChartDataPoint
                 {
                     Label = g.Key,
@@ -120,6 +131,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public async Task<IActionResult> ManageDoctors()
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var doctorList = await _context.Doctors
                 .Select(d => new DoctorViewModel
                 {
@@ -136,13 +152,24 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public IActionResult AddDoctor()
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
+            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDoctor(DoctorViewModel model)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
                 // Generate temporary password
@@ -197,13 +224,14 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                                 $"Once logged in, you can change your password by visiting the profile settings.\n\n" +
                                 $"Thank you.";
 
-                var _emailService = new EmailService();
+                //var _emailService = new EmailService();
                 await _emailService.SendEmailAsync(model.Email, emailSubject, emailBody);
 
-                TempData["SuccessMessage"] = "Doctor added successfully. A temporary password has been sent to the doctor.";
+                TempData["SuccessMessage"] = "Doctor added successfully. A username and temporary password has been sent to the doctor.";
                 return RedirectToAction("ManageDoctors");
             }
 
+            TempData["ErrorMessage"] = "Something went wrong while updating the doctor.";
             return View(model);
         }
         
@@ -262,6 +290,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public IActionResult EditDoctor(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var doctor = _context.Doctors.Include(d => d.User).FirstOrDefault(d => d.DoctorId == id);
 
             if (doctor == null)
@@ -283,8 +316,16 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDoctor(DoctorViewModel model)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Something went wrong while updating patient details.";
                 return View(model);
+            }
 
             var doctor = await _context.Doctors.Include(d => d.User).FirstOrDefaultAsync(d => d.DoctorId == model.DoctorId);
             if (doctor == null)
@@ -297,11 +338,18 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             doctor.User.Email = model.Email;
 
             _context.SaveChanges();
+            TempData["SuccessMessage"] = "Doctor details updated successfully.";
+
             return RedirectToAction("ManageDoctors");
         }
 
         public async Task<IActionResult> ViewDoctorAvailability(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var doctor = _context.Doctors
                 .Include(d => d.User)
                 .FirstOrDefault(d => d.DoctorId == id);
@@ -338,6 +386,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public IActionResult EditAvailability(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             // Fetch the availability entry by its ID
             var availability = _context.DoctorAvailabilities
                 .FirstOrDefault(a => a.DoctorAvailabilityId == id);
@@ -388,24 +441,41 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAvailability(AvailabilityViewModel availability)
         {
-            // Update existing availability
-            var existing = await _context.DoctorAvailabilities
-                .FirstOrDefaultAsync(a => a.DoctorAvailabilityId == availability.AvailabilityId);
-
-            if (existing != null)
+            if (!IsAdminLoggedIn())
             {
-                existing.Day = availability.Day;
-                existing.StartTime = availability.StartTime;
-                existing.EndTime = availability.EndTime;
+                return RedirectToAction("Index", "Home");
             }
-            await _context.SaveChangesAsync();
 
-            return RedirectToAction("ViewDoctorAvailability", new { id = existing.DoctorId });
+            if (ModelState.IsValid)
+            {
+                // Update existing availability
+                var existing = await _context.DoctorAvailabilities
+                    .FirstOrDefaultAsync(a => a.DoctorAvailabilityId == availability.AvailabilityId);
+
+                if (existing != null)
+                {
+                    existing.Day = availability.Day;
+                    existing.StartTime = availability.StartTime;
+                    existing.EndTime = availability.EndTime;
+                }
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Doctor's availability updated successfully.";
+                return RedirectToAction("ViewDoctorAvailability", new { id = existing.DoctorId });
+            }
+
+            TempData["ErrorMessage"] = "Something went wrong while updating the doctor's availability";
+            return View(availability);
         }
 
         [HttpGet]
         public IActionResult AddAvailability(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var doctorId = id;
            
             // Get all days already available for the doctor
@@ -435,6 +505,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAvailability(AvailabilityViewModel availability)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
                 // Create a new DoctorAvailability entity
@@ -450,15 +525,23 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 _context.DoctorAvailabilities.Add(doctorAvailability);
                 await _context.SaveChangesAsync();
 
+                TempData["SuccessMessage"] = "Doctor's availability added successfully.";
                 // Redirect to the doctor availability view (or another action as needed)
                 return RedirectToAction("ViewDoctorAvailability", new { id = availability.DoctorId });
             }
+
+            TempData["ErrorMessage"] = "Something went wrong while adding availability of the doctor.";
             return View(availability);
         
         }
 
         public async Task<IActionResult> DeleteAvailability(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var availability = await _context.DoctorAvailabilities.FirstOrDefaultAsync(a => a.DoctorAvailabilityId == id);
 
             if (availability != null)
@@ -466,14 +549,21 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 _context.DoctorAvailabilities.Remove(availability);
                 await _context.SaveChangesAsync();
 
+                TempData["SuccessMessage"] = "Doctor's avilability deleted successfully.";
                 return RedirectToAction("ViewDoctorAvailability", new { id = availability.DoctorId });
             }
 
-            return NotFound();
+            TempData["ErrorMessage"] = "Something went wrong while deleting doctor's availability";
+            return RedirectToAction("ViewDoctorAvailability", new { id = availability.DoctorId });
         }
 
         public async Task<IActionResult> DeleteDoctor(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.DoctorId == id);
 
             if (doctor != null)
@@ -485,14 +575,22 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 {
                     _context.Users.Remove(user);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Doctor deleted successfully.";
+                    return RedirectToAction("ManageDoctors");
                 }
             }
 
+            TempData["ErrorMessage"] = "Something went wrong while deleting the doctor.";
             return RedirectToAction("ManageDoctors");
         }
 
         public async Task<IActionResult> ManagePatients()
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var patientList = await _context.Patients
                 .Select(p => new PatientViewModel
                 {
@@ -509,7 +607,13 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         }
 
-        public IActionResult EditPatient(int id){
+        public IActionResult EditPatient(int id)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var patient = _context.Patients.Include(p => p.User).FirstOrDefault(p => p.PatientId == id);
 
             if (patient == null)
@@ -532,8 +636,16 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditPatient(PatientViewModel model)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Something went wrong while updating patient details.";
                 return View(model);
+            }
 
             var patient = _context.Patients.Include(p => p.User).FirstOrDefault(p => p.PatientId == model.PatientId);
             if (patient == null)
@@ -542,7 +654,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             // Update fields
             patient.FullName = model.FullName;
             patient.ContactNumber = model.ContactNumber;
-            patient.Gender = model.Gender;
+            patient.Gender = model.Gender!;
             patient.DateOfBirth = model.DateOfBirth;
 
             // Update User (email only in this case)
@@ -552,11 +664,17 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             }
 
             _context.SaveChanges();
+            TempData["SuccessMessage"] = "Patient details updated successfully.";
             return RedirectToAction("ManagePatients");
         }
 
         public async Task<IActionResult> DeletePatient(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var patient = await _context.Patients.FirstOrDefaultAsync(p => p.PatientId == id);
 
             if (patient != null)
@@ -568,15 +686,23 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 {
                     _context.Users.Remove(user); 
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] = "Patient deleted successfully.";
+                    return RedirectToAction("ManagePatients");
                 }
             }
 
+            TempData["ErrorMessage"] = "Something went wrong while deleting patient.";
             return RedirectToAction("ManagePatients");
         }
 
         public async Task<IActionResult> ViewAppointments(int? id, string role)
         {
-            //int pageSize = 10;
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var appointments = new List<AppointmentViewModel> { };
             if (id == null && role == "admin")
             {
@@ -651,6 +777,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public IActionResult DeleteAppointment(int id)
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var appointment = _context.Appointments.Find(id);
             if (appointment == null)
             {
@@ -660,12 +791,17 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             _context.Appointments.Remove(appointment);
             _context.SaveChangesAsync();
 
-            TempData["Message"] = "Appointment deleted successfully.";
+            TempData["SuccessMessage"] = "Appointment deleted successfully.";
             return RedirectToAction("ViewAppointments", new { role = "admin"});
         }
 
         public async Task<IActionResult> ViewFeedbacks()
         {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var feedbacks = await _context.Feedbacks
                 .Include(f => f.Patient)
                 .Include(f => f.Doctor)
@@ -684,8 +820,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
         public async Task<IActionResult> ViewUnavailability()
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if(userId == null)
+            if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -707,6 +842,13 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         [HttpGet]
         public IActionResult ReportUnavailability()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("UserRole");
+            if (userId == null || (role != null && role.ToLower() == "patient"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -714,10 +856,18 @@ namespace HospitalAppointmentsSystemMVC.Controllers
         public async Task<IActionResult> ReportUnavailability(UnavailabilityViewModel model)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
+            var role = HttpContext.Session.GetString("UserRole");
+            if (userId == null || (role != null && role.ToLower() == "patient"))
             {
-                return RedirectToAction("Index", "home");
+                return RedirectToAction("Index", "Home");
             }
+
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Something went wrong while reporting unavailability.";
+                return View(model);
+            }
+
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
 
             if (user == null)
@@ -727,7 +877,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             {
                 UnavailableDate = model.UnavailableDate.Date,
                 Reason = model.Reason,
-                AddedBy = user.Role 
+                AddedBy = user.Role! 
             };
 
             if (user.Role!.ToLower() == "doctor")
@@ -749,14 +899,12 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             _context.DoctorUnavailabilities.Add(unavailability);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Unavailability reported successfully.";
-
             model.AddedBy = user.Role;
             CancelAllAppointments(model);
             
             if(user.Role.ToLower() == "doctor")
             {
-                return RedirectToAction("Home", "Doctor");
+                return RedirectToAction("DoctorSchedules", "Doctor");
             }
             return RedirectToAction("ViewUnavailability");
         }
@@ -780,7 +928,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     .ToList();
 
 
-            var emailService = new EmailService();
+            //var emailService = new EmailService();
 
             // Group by Patient to send a single email with only the affected appointments
             var groupedByPatient = appointmentsToCancel
@@ -809,13 +957,13 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     appointment.CancellationReason = model.Reason;
                     appointment.CanceledBy = model.AddedBy;
 
-                    body += $"- Doctor: {appointment.Doctor.FullName}, Time: {appointment.TimeSlot}\n";
+                    body += $"- Doctor: {appointment.Doctor!.FullName}, Time: {appointment.TimeSlot}\n";
                 }
 
                 body += "\nWe apologize for the inconvenience.\nThank you.";
 
                 // Send the email
-                emailService.SendEmailAsync(patient.User.Email, subject, body);
+                _emailService.SendEmailAsync(patient.User.Email, subject, body);
             }
 
             // Notify affected doctors if cancelled by admin
@@ -839,12 +987,12 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
                     doctorBody += "\nRegards,\nHospital Admin";
 
-                    emailService.SendEmailAsync(doctor.User.Email, doctorSubject, doctorBody);
+                    _emailService.SendEmailAsync(doctor.User!.Email, doctorSubject, doctorBody);
                 }
             }
 
             _context.SaveChangesAsync();
-            TempData["Message"] = "Affected appointments cancelled and notifications sent.";
+            TempData["SuccessMessage"] = "Unavailability reported successfully and Affected appointments cancelled and notifications sent.";
         }
     }
 }

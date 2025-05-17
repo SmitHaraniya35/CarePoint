@@ -109,16 +109,67 @@
 
     <!-- Header/Navbar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark">
+        @* <nav class="navbar navbar-expand-sm navbar-dark"> *@
+        @*     <div class="container-fluid" style="margin-left: 1.2rem; margin-right: 1.2rem;"> *@
+        @*         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarePoint</a> *@
+        @*         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" *@
+        @*                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> *@
+        @*             <span class="navbar-toggler-icon"></span> *@
+        @*         </button> *@
+        @*         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end"> *@
+        @*             <ul class="navbar-nav"> *@
+
+        @*                 @if (role == "Admin") *@
+        @*                 { *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManageDoctors">Doctors</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ManagePatients">Patients</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewAppointments" asp-route-id="" asp-route-role="admin">Appointments</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewFeedbacks">Feedbacks</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="ViewUnavailability">Unavailability</a></li> *@
+        @*                 } *@
+        @*                 else if (role == "Patient") *@
+        @*                 { *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="Home">Home</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="BookAppointment">Book</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="ViewAppointments">Appointments</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Patient" asp-action="ManagePatientProfile">Profile</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="ManageAccount">Account</a></li> *@
+        @*                 } *@
+        @*                 else if (role == "Doctor") *@
+        @*                 { *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="Home">Home</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="ViewAppointments">Appointments</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="DoctorSchedules">Schedules</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="Doctor" asp-action="ManageDoctorProfile">Profile</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="ManageAccount">Account</a></li> *@
+        @*                 } *@
+
+        @*                 @if (!isLoggedIn) *@
+        @*                 { *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Signup">Signup</a></li> *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Login">Login</a></li> *@
+        @*                 } *@
+        @*                 else *@
+        @*                 { *@
+        @*                     <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li> *@
+        @*                 } *@
+
+        @*             </ul> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </nav> *@
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid" style="margin-left: 1.2rem; margin-right: 1.2rem;">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarePoint</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    <ul class="navbar-nav">
 
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto">
                         @if (role == "Admin")
                         {
                             <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
@@ -154,11 +205,11 @@
                         {
                             <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a></li>
                         }
-
                     </ul>
                 </div>
             </div>
         </nav>
+
     </header>
 
     <!-- Main Content -->
