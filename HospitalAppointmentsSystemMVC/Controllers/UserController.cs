@@ -99,9 +99,18 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
-            if(user!=null && user.IsFirstLogin == true && user.Role!.ToLower() == "doctor")
+            if(user!=null &&  user.Role!.ToLower() == "doctor")
             {
-                TempData["FirstLoginMessage"] = "Welcome! To complete your account setup, please take a moment to update your profile information.";
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.UserId == user.UserId);
+                
+                if(doctor !=null && !doctor.IsActive)
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
+                    return View();
+                }
+
+                if(doctor!=null && doctor.IsFirstLogin)
+                    TempData["FirstLoginMessage"] = "Welcome! To complete your account setup, please take a moment to update your profile information.";
             }
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
@@ -192,15 +201,28 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     return View();
                 }
 
+                if(user.Role!.ToLower() == "doctor")
+                {
+                    var doctor = _context.Doctors.FirstOrDefault(d => d.UserId == user.UserId);
+                    doctor.IsFirstLogin = false;
+                }
+
                 // Update username and password
                 user.Username = username;
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
-                user.IsFirstLogin = false;
 
                 _context.SaveChanges();
 
                 TempData["SuccessMessage"] = "Account updated successfully.";
-                return RedirectToAction("Index", "Home");
+
+                if(user.Role.ToLower() == "patient")
+                {
+                    return RedirectToAction("Home", "Patient");
+                }
+                if(user.Role.ToLower() == "doctor")
+                {
+                    return RedirectToAction("Home", "Doctor");
+                }
             }
 
             return View();

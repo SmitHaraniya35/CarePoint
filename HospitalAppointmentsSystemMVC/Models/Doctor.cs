@@ -26,6 +26,8 @@ namespace HospitalAppointmentsSystemMVC.Models
 
         public bool IsActive { get; set; }
 
+        public bool IsFirstLogin { get; set; } = true;
+
         // Navigation
         [ForeignKey("UserId")]
         public User User { get; set; }

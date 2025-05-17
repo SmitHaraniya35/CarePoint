@@ -1,2 +1,0 @@
-D:\College\My Project\HospitalAppointmentsSystemMVC\HospitalAppointmentsSystemMVC\wwwroot\images\cardiology.jpg
-D:\College\My Project\HospitalAppointmentsSystemMVC\HospitalAppointmentsSystemMVC\wwwroot\images\neurology.jpg

@@ -143,6 +143,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             // Load unique specializations from doctors
             var specializations = _context.Doctors
+                .Where(d => d.IsActive == true)
                 .Select(d => d.Specialization)
                 .Distinct()
                 .ToList();
@@ -168,7 +169,11 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                 // check what happen?
                 //ViewBag.TimeSlots = new List<string> { "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "02:00 PM", "03:00 PM" };
                 TempData["ErrorMessage"] = "Something went wrong while booking an appointment.";
-                ViewBag.Specializations = _context.Doctors.Select(d => d.Specialization).Distinct().ToList();
+                ViewBag.Specializations = _context.Doctors
+                    .Where(d => d.IsActive == true)
+                    .Select(d => d.Specialization)
+                    .Distinct()
+                    .ToList();
                 return View(model);
             }
 
@@ -200,7 +205,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             }
 
             var doctors = _context.Doctors
-                .Where(d => d.Specialization == specialization)
+                .Where(d => d.Specialization == specialization && d.IsActive == true)
                 .Select(d => new
                 {
                     DoctorId = d.DoctorId,

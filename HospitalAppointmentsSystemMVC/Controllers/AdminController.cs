@@ -29,7 +29,6 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             return userId != null && role != null && role.ToLower() == "admin";
         }
 
-
         public IActionResult Dashboard()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -143,7 +142,8 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     FullName = d.FullName,
                     ContactNumber = d.ContactNumber,
                     Specialization = d.Specialization,
-                    Email = d.User.Email
+                    Email = d.User.Email,
+                    IsActive = d.IsActive
                 })
                 .ToListAsync();
 
@@ -557,7 +557,7 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             return RedirectToAction("ViewDoctorAvailability", new { id = availability.DoctorId });
         }
 
-        public async Task<IActionResult> DeleteDoctor(int id)
+        public async Task<IActionResult> InActivateDoctor(int id)
         {
             if (!IsAdminLoggedIn())
             {
@@ -568,19 +568,34 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             if (doctor != null)
             {
-                // Now find the corresponding user
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == doctor.UserId && u.Role == "Doctor");
-
-                if (user != null)
-                {
-                    _context.Users.Remove(user);
-                    await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Doctor deleted successfully.";
-                    return RedirectToAction("ManageDoctors");
-                }
+                doctor.IsActive = false;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Doctor inactivated successfully.";
+                return RedirectToAction("ManageDoctors");
             }
 
-            TempData["ErrorMessage"] = "Something went wrong while deleting the doctor.";
+            TempData["ErrorMessage"] = "Something went wrong while inactivating the doctor.";
+            return RedirectToAction("ManageDoctors");
+        }
+
+        public async Task<IActionResult> ActivateDoctor(int id)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.DoctorId == id);
+
+            if (doctor != null)
+            {
+                doctor.IsActive = true;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Doctor activated successfully.";
+                return RedirectToAction("ManageDoctors");
+            }
+
+            TempData["ErrorMessage"] = "Something went wrong while activating the doctor.";
             return RedirectToAction("ManageDoctors");
         }
 
@@ -668,34 +683,6 @@ namespace HospitalAppointmentsSystemMVC.Controllers
             return RedirectToAction("ManagePatients");
         }
 
-        public async Task<IActionResult> DeletePatient(int id)
-        {
-            if (!IsAdminLoggedIn())
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.PatientId == id);
-
-            if (patient != null)
-            {
-                // Now find the corresponding user
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == patient.UserId && u.Role == "Patient");
-
-                if (user != null)
-                {
-                    _context.Users.Remove(user); 
-                    await _context.SaveChangesAsync();
-
-                    TempData["SuccessMessage"] = "Patient deleted successfully.";
-                    return RedirectToAction("ManagePatients");
-                }
-            }
-
-            TempData["ErrorMessage"] = "Something went wrong while deleting patient.";
-            return RedirectToAction("ManagePatients");
-        }
-
         public async Task<IActionResult> ViewAppointments(int? id, string role)
         {
             if (!IsAdminLoggedIn())
@@ -769,11 +756,6 @@ namespace HospitalAppointmentsSystemMVC.Controllers
 
             return View(appointments);
         }
-
-        //public async Task<IActionResult> EditAppointment()
-        //{
-
-        //}
 
         public IActionResult DeleteAppointment(int id)
         {
@@ -927,8 +909,6 @@ namespace HospitalAppointmentsSystemMVC.Controllers
                     .Where(a => a.AppointmentDate.Date == model.UnavailableDate.Date)
                     .ToList();
 
-
-            //var emailService = new EmailService();
 
             // Group by Patient to send a single email with only the affected appointments
             var groupedByPatient = appointmentsToCancel

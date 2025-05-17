@@ -28,8 +28,6 @@ namespace HospitalAppointmentsSystemMVC.Models
         [RegularExpression(@"^(Admin|Doctor|Patient)$", ErrorMessage = "Role must be either Admin, Doctor, or Patient.")]
         public string? Role { get; set; } // Admin, Doctor, Patient
 
-        public bool IsFirstLogin { get; set; } = true;
-
         [StringLength(6)]
         public string? ResetOtp { get; set; }   
         

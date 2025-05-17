@@ -104,9 +104,6 @@
                                     <a class="btn btn-sm btn-outline-info" asp-action="ViewAppointments" asp-route-id="@patient.PatientId" asp-route-role="patient">
                                         <i class="bi bi-calendar-check-fill"></i> Appointments
                                     </a>
-                                    <a class="btn btn-sm btn-outline-danger" asp-action="DeletePatient" asp-route-id="@patient.PatientId" onclick="return confirm('Are you sure you want to delete this patient?')">
-                                        <i class="bi bi-trash-fill"></i> Delete
-                                    </a>
                                 </div>
                             </td>
                         </tr>
