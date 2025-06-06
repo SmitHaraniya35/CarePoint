@@ -104,8 +104,4 @@ Patients can:
 
 ---
 
-## 📬 Contact
-For any issues or contributions, feel free to raise a GitHub issue or contact the maintainer.
-
----
 
